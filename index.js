@@ -32,3 +32,5 @@ app.listen( PORT, () =>
 app.use( express.static( './public' ) );
 
 app.use( "/api/auth", require( './Routes/authRoute' ) );
+
+app.use( "/api/category", require( './Routes/categoryRoute' ) );

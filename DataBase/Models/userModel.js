@@ -13,6 +13,8 @@ const userSchema = Schema(
         
         password : { type : String, required : true },
 
+        liked : { type : Array, required : true }
+
     }
 
 );

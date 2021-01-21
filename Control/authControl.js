@@ -1,6 +1,7 @@
 const { request, response } = require ( 'express' );
-const User = require( '../DataBase/Models/userModel' )
+const User = require( '../DataBase/Models/userModel' );
 const bcryptjs = require( 'bcryptjs' );
+
 
 //////<<<<<------------------------------------------------``
 
@@ -14,10 +15,17 @@ const register = async ( request, response = response ) =>
         const { userName, email, password } = request.body;
 
 
-        let user = await User.findOne( { email, userName } );
+        let user = await User.findOne( { userName } );
         if( user )
         {
-            return response.status( 400 ).json( { ok : false, msg : "User name or email already exists" } );  
+            return response.status( 400 ).json( { ok : false, msg : "User name already exists" } );  
+        };
+
+
+        user = await User.findOne( { email } );
+        if( user )
+        {
+            return response.status( 400 ).json( { ok : false, msg : "Email already exists" } );  
         };
         
 
@@ -50,8 +58,23 @@ const login = async ( request, response = response ) =>
     {   
         
         const { email, password } = request.body;
+
+
+        let user = await User.findOne( { email } );
+        if( !user )
+        {
+            return response.status( 400 ).json( { ok : false, msg : `User don't exist` } )
+        };
+
+
+        const validPassword = bcryptjs.compareSync( password, user.password );
+        if( !validPassword )
+        {
+            return response.status( 400 ).json( { ok : false, msg : "Access denied - wrong password" } );
+        };
         
-        return response.status( 200 ).json( { ok : true, msg : 'login control', data : request.body  } )
+
+        return response.status( 200 ).json( { ok : true, msg : 'login control', loggedUser : user } );
     
     } 
     catch( error ) 
