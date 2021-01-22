@@ -15,6 +15,7 @@ connDB();
 
 ///////////////////////////// LISTEN ///////////////////////////////
 
+
 let PORT;
 
 !process.env.PORT ? PORT = 4030 : PORT = process.env.PORT;
@@ -22,6 +23,7 @@ let PORT;
 
 app.listen( PORT, () => 
 { console.log( `Servidor corriendo ${ PORT }` ) } );
+
 
 /////////////////////////////////////////////////////////////////////
 
@@ -34,3 +36,5 @@ app.use( express.static( './public' ) );
 app.use( "/api/auth", require( './Routes/authRoute' ) );
 
 app.use( "/api/category", require( './Routes/categoryRoute' ) );
+
+app.use( "/api/post", require( './Routes/postRoute' ) );
